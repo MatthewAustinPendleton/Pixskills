@@ -50,6 +50,12 @@ const STYLE_OFFSETS: Dictionary = {
 			"up": Vector2(0, -5),
 			"left": Vector2(1, -6),
 			"right": Vector2(-1, -6)
+		},
+		"Hair2": {
+			"down": Vector2(0, -3),
+			"up": Vector2(0, -3),
+			"left": Vector2(1, -4),
+			"right": Vector2(-1, -4)
 		}
 	},
 	"eyes": {
