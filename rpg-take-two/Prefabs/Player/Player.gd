@@ -3,6 +3,10 @@ extends CharacterBody2D
 @onready var body: Node2D = $Body
 @onready var spr: Sprite2D = $Body/Base
 
+# Use a PackedScene reference and instantiate inside _ready()
+const INVENTORY_UI_SCENE: PackedScene = preload("res://UI/InventoryUI.tscn")
+var inventory_ui: CanvasLayer
+
 const TILE_SIZE := Vector2(32, 32)
 const TEXTURE := {
 	"down": preload("res://Graphics/Player-Sprites/player_down.png"),
@@ -23,6 +27,8 @@ var facing: String = "down"
 var wobble_tween: Tween = null
 
 func _ready() -> void:
+	print("[Player] _ready() start")
+	
 	spr.centered = true
 	spr.rotation_degrees = 0.0
 	body.rotation_degrees = 0.0
@@ -31,6 +37,37 @@ func _ready() -> void:
 	
 	set_meta("facing", facing)
 	Appearance.attach($Body)
+	
+	# Instantiate UI and add it
+	if INVENTORY_UI_SCENE == null:
+		push_error("[Player] INVENTORY_UI_SCENE is null (bad path?)")
+		return
+		
+	inventory_ui = INVENTORY_UI_SCENE.instantiate() as CanvasLayer
+	if inventory_ui == null:
+		push_error("[Player] InventoryUI root is not a CanvasLayer?")
+		inventory_ui = INVENTORY_UI_SCENE.instantiate()
+	
+	# Use deferred add to avoid any "tree locked" timing issues
+	get_tree().root.call_deferred("add_child", inventory_ui)
+	
+	# Defer visibility set until after it's added
+	call_deferred("_finish_setup_ui")
+
+func _finish_setup_ui() -> void:
+	if inventory_ui:
+		inventory_ui.visible = false
+		print("[Player] UI added. parent = ", inventory_ui.get_parent(), "  visible = ", inventory_ui.visible)
+	else:
+		push_error("[Player] UI instance missing after add_child.")
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("inventory_toggle"):
+		if inventory_ui and is_instance_valid(inventory_ui):
+			inventory_ui.visible = !inventory_ui.visible
+			print("[UI] toggled ->", inventory_ui.visible)
+		else:
+			push_warning("[UI] toggle pressed but UI not instantiated yet.")
 
 func _physics_process(_delta: float) -> void:
 	if is_moving:

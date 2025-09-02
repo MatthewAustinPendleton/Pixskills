@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=3 uid="uid://dctdkfvt2por6"]
+
+[ext_resource type="Script" uid="uid://bahtsrtwk7c5a" path="res://UI/InventoryUI.gd" id="1_xufhh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4ng8"]
+bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.227451, 0.227451, 0.227451, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InventoryUI" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_xufhh")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -100.0
+offset_right = 400.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="PanelContainer" parent="Root/Layout"]
+texture_filter = 1
+custom_minimum_size = Vector2(560, 380)
+layout_mode = 1
+offset_right = 560.0
+offset_bottom = 380.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4ng8")
+
+[node name="Padding" type="MarginContainer" parent="Root/Layout/Window"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Main" type="VBoxContainer" parent="Root/Layout/Window/Padding"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Root/Layout/Window/Padding/Main"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Inventory"
+horizontal_alignment = 1
+
+[node name="ContentBG" type="ColorRect" parent="Root/Layout/Window/Padding/Main"]
+custom_minimum_size = Vector2(520, 300)
+layout_mode = 2
+color = Color(0.168627, 0.235294, 1, 1)
